@@ -6,9 +6,9 @@ const OptionPage = (uid) => {
 
     const generateRoom = async () => {
         // cloud function to set up new room
-        // await createNewChatRoom(uid);
-        const msg = await getMessages();
-        console.log(msg);
+        await createNewChatRoom(uid);
+        // const msg = await getMessages();
+        // console.log(msg);
     }
 
     return (
