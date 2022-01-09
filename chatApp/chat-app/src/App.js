@@ -1,21 +1,17 @@
 import react, { useState, useRef } from 'react';
 // npm install firebase react-firebase-hooks
+import fire from './firebase';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-
 import './App.css';
-
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-firebase.initializeApp({
-
-});
+import OptionPage from './views/OptionPage';
 
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+const auth = fire.auth();
+const firestore = fire.firestore();
 
 
 function SignIn() {
@@ -52,7 +48,7 @@ function ChatRoom() {
 
     await messagesRef.add({
       text: formValue,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: fire.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL
     });
@@ -91,15 +87,15 @@ function ChatMessage(props) {
 }
 
 function App() {
-
   const [user] = useAuthState(auth);
+  
   return (
     <div className="App">
       <header className="App-header">
         <SignOut />
       </header>
       <section>
-        {user ? <ChatRoom /> : <SignIn />}
+        {user ? <OptionPage uid={user.uid}/> : <SignIn />}
       </section>
     </div>
   );
