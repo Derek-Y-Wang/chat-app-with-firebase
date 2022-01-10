@@ -4,29 +4,23 @@ import firebase from 'firebase/compat/app';
 const firestore = fire.firestore();
 
 const createNewChatRoom = async (uid) => {
+    let roomCode = null;
+
     const roomRef = await firestore
         .collection('rooms')
-        .add({
-            host: uid.uid,  
-            startTime: firebase.firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-            console.log("new room successfully written!");
+        .add({})
+        .then((data) => {
+            roomCode = data.id;
         })
         .catch((error) => {
             console.error("Error writing new room: ", error);
         });
 
-    // await firestore
-    //     .collection('rooms')
-    //     .doc(roomRef.id)
-    //     .set({})
-    //     .then(() => {
-    //         console.log("message collection successfully written!");
-    //     })
-    //     .catch((error) => {
-    //         console.error("Error writing message collection: ", error);
-    //     });
+    await firestore.collection('rooms').doc(roomCode).set({
+        roomId: roomCode,
+        host: uid.uid,  
+        startTime: firebase.firestore.FieldValue.serverTimestamp(),
+    })
 
 };
 
