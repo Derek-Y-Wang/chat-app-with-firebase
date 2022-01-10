@@ -22,7 +22,13 @@ const createNewChatRoom = async (uid) => {
         startTime: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
+    await firestore.collection('rooms').doc(roomCode).collection('messages').add({"Welcome": "Hello There!"});
+
+    return roomCode; 
+
 };
+
+
 
 const getMessages = async () => {
     // sample cloud function getting all documents in messages collection

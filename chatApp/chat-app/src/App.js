@@ -7,7 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import OptionPage from './views/OptionPage';
 import SignIn from './Component/SignIn';
 import SignOut from './Component/SignOut';
-import ChatRoom from './views/CharRoom';
+import ChatRoom from './views/ChatRoom';
 
 
 function App() {
@@ -17,11 +17,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <SignOut />
+        <SignOut /> 
       </header>
       <section>
-        {user ? <ChatRoom/> : <SignIn />}
-        {/* {user ? <OptionPage uid={user.uid}/> : <SignIn />} */}
+        {/* {user ? <ChatRoom/> : <SignIn />} */}
+        {user ? <OptionPage uid={user.uid}/> : <SignIn />}
       </section>
     </div>
   );
