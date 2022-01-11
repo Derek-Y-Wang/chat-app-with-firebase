@@ -3,6 +3,15 @@ import firebase from 'firebase/compat/app';
 
 const firestore = fire.firestore();
 
+const getMessages = async () => {
+    // sample cloud function getting all documents in messages collection
+     const snapshot = await firestore
+        .collection('messages')
+        .get();
+    return snapshot.docs.map(doc => doc.data());
+    
+}
+
 const createNewChatRoom = async (uid) => {
     let roomCode = null;
 
@@ -22,24 +31,23 @@ const createNewChatRoom = async (uid) => {
         startTime: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
-    await firestore.collection('rooms').doc(roomCode).collection('messages').add({"Welcome": "Hello There!"});
+    await firestore.collection('rooms').doc(roomCode).collection('messages').add({"Server Message": "Chat Room Started!"});
 
     return roomCode; 
-
 };
 
-
-
-const getMessages = async () => {
-    // sample cloud function getting all documents in messages collection
-     const snapshot = await firestore
+const getChatRoomMessages = async(roomId) => {
+    const snapshot = await firestore
+        .collection('rooms')
+        .doc(roomId)
         .collection('messages')
         .get();
-    return snapshot.docs.map(doc => doc.data());
-    
+    return snapshot.docs.map(doc => doc.data())
+
 }
 
 export {
     createNewChatRoom,
-    getMessages
+    getMessages,
+    getChatRoomMessages
 }

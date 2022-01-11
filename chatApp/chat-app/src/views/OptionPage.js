@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createNewChatRoom, getMessages } from '../services';
+import { createNewChatRoom, getChatRoomMessages } from '../services';
 import ChatRoom from './ChatRoom';
 
 const OptionPage = (uid) => { 
@@ -12,14 +12,17 @@ const OptionPage = (uid) => {
         // cloud function to set up new room
         const roomCode = await createNewChatRoom(uid);
         setRoomCode(roomCode); 
-        // const msg = await getMessages();
-        // console.log(msg);
+        setJoinRoom(true);
+        await getChatRoomMessages(roomCode);
+
     }
 
-    const onJoin = () => { 
-        setJoinRoom(true);
-        console.log(userInput); 
+    const onJoin = async () => { 
         setRoomCode(userInput); 
+        const roomMatch = await getChatRoomMessages(roomCode);
+        if (roomMatch.length >= 1){
+            setJoinRoom(true)
+        }
         setUserInput(''); 
     }
 
