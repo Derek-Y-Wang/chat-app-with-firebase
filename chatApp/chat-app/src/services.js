@@ -54,7 +54,7 @@ const addUserToChatRoom = async(uid, roomId) => {
         .collection('users')
         .get();
     const data = snapshot.docs.map(doc => doc.data().uid);
-    if (!(uid in data)){
+    if (!(data.includes(uid))){
         await firestore 
             .collection('rooms')
             .doc(roomId)
