@@ -15,13 +15,11 @@ function ChatRoom( { roomCode } ) {
     
     const [messages] = useCollectionData(query, {idField: 'id'});
 
-    const [formValue, setFormValue] = useState('');
+    const [formValue, setFormValue] = useState(''); 
 
     const sendMessage = async(e) => {
         e.preventDefault();
-
         const { uid, photoURL } = auth.currentUser;
-
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -41,7 +39,8 @@ function ChatRoom( { roomCode } ) {
         <div>
             <header className='App-header'>
                 <SignOut />
-                <Back/>
+                <h1>{roomCode}</h1>
+                <Back/>  
             </header>
             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
 
