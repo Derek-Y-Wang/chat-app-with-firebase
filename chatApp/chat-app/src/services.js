@@ -31,7 +31,8 @@ const createNewChatRoom = async (uid) => {
         startTime: firebase.firestore.FieldValue.serverTimestamp(),
     })
 
-    await firestore.collection('rooms').doc(roomCode).collection('messages').add({"Server Message": "Chat Room Started!"});
+    await firestore.collection('rooms').doc(roomCode).collection('messages').add({"Server Message": "Messages Created"});
+    await firestore.collection('rooms').doc(roomCode).collection('users').add({uid: uid.uid});
 
     return roomCode; 
 };
@@ -46,8 +47,25 @@ const getChatRoomMessages = async(roomId) => {
 
 }
 
+const addUserToChatRoom = async(uid, roomId) => {
+    const snapshot = await firestore
+        .collection('rooms')
+        .doc(roomId)
+        .collection('users')
+        .get();
+    const data = snapshot.docs.map(doc => doc.data().uid);
+    if (!(uid in data)){
+        await firestore 
+            .collection('rooms')
+            .doc(roomId)
+            .collection('users')
+            .add({uid: uid})
+    }
+}
+
 export {
     createNewChatRoom,
     getMessages,
-    getChatRoomMessages
+    getChatRoomMessages, 
+    addUserToChatRoom
 }

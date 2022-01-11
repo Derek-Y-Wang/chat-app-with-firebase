@@ -3,6 +3,7 @@ import { useState } from 'react';
 import fire from '../firebase';
 import ChatMessage from '../Component/ChatMessage';
 import firebase from 'firebase/compat/app';
+import SignOut from '../Component/SignOut';
 
 function ChatRoom( { roomCode } ) {
   
@@ -31,9 +32,17 @@ function ChatRoom( { roomCode } ) {
         setFormValue('');
     }
 
+    const Back = () => {
+        return <button>Back</button>
+    } 
+
     return (
         <>
         <div>
+            <header className='App-header'>
+                <SignOut />
+                <Back/>
+            </header>
             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
 
         </div>

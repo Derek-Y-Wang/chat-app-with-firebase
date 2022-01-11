@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { createNewChatRoom, getChatRoomMessages } from '../services';
+import { createNewChatRoom, getChatRoomMessages, addUserToChatRoom } from '../services';
 import ChatRoom from './ChatRoom';
+import SignOut from '../Component/SignOut';
 
 const OptionPage = (uid) => { 
     const [joinCode, setJoinCode] = useState(false);
@@ -14,22 +15,24 @@ const OptionPage = (uid) => {
         setRoomCode(roomCode); 
         setJoinRoom(true);
         await getChatRoomMessages(roomCode);
-
     }
 
     const onJoin = async () => { 
         setRoomCode(userInput); 
         const roomMatch = await getChatRoomMessages(roomCode);
         if (roomMatch.length >= 1){
-            setJoinRoom(true)
+            await addUserToChatRoom(uid.uid, roomCode);
+            setJoinRoom(true);
         }
         setUserInput(''); 
     }
 
     return (
         <div>
-            { 
-            !joinRoom ? <div> 
+            <header className='App-header'>
+                <SignOut />
+            </header>
+            {!joinRoom ? <div> 
                     {!joinCode && (
                         <div>
                             <button onClick={() => generateRoom()}>Create Room</button> 
@@ -44,7 +47,7 @@ const OptionPage = (uid) => {
                             <button onClick={onJoin}>Join</button>
                         </div>
                     )}
-                </div> : <ChatRoom roomCode={roomCode} /> 
+                </div> : <ChatRoom roomCode={roomCode}  /> 
             }
         </div>
     ); 
