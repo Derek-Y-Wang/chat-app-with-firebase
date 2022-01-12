@@ -63,9 +63,17 @@ const addUserToChatRoom = async(uid, roomId) => {
     }
 }
 
+const deleteChatRoom = async(roomId) => {
+    await firestore
+        .collection('rooms')
+        .doc(roomId)
+        .delete();
+}
+
 export {
     createNewChatRoom,
     getMessages,
     getChatRoomMessages, 
-    addUserToChatRoom
+    addUserToChatRoom,
+    deleteChatRoom,
 }
