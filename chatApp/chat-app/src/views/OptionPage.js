@@ -30,7 +30,7 @@ const OptionPage = (uid) => {
     return (
         <div>
             <header className='App-header'>
-                <SignOut />
+                <SignOut roomId={null} uid={uid}/>
             </header>
             {!joinRoom ? <div> 
                     {!joinCode && (

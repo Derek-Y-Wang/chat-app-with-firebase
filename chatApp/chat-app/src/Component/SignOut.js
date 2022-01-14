@@ -1,10 +1,22 @@
 import fire from '../firebase';
+import { getChatRoomUsers, deleteChatRoom, deleteUserFromChatRoom } from '../services';
 
-function SignOut() {
-    const auth = fire.auth();
+const SignOut = ({roomId, uid}) => {
+  const auth = fire.auth();
+
+  const handleSignOut = async() => {
+    auth.signOut();
+    if (roomId){
+      await deleteUserFromChatRoom(roomId, uid);
+    }
+    const numberInRooms = roomId ? await getChatRoomUsers() : null;
+    if (numberInRooms && numberInRooms.length === 0){
+      await deleteChatRoom(roomId);
+    }
+  }
 
   return auth.currentUser && (
-    <button onClick={() => auth.signOut()}>Sign Out</button>
+    <button onClick={() => handleSignOut()}>Sign Out</button>
   )
 }
 

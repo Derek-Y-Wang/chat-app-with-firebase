@@ -64,10 +64,33 @@ const addUserToChatRoom = async(uid, roomId) => {
 }
 
 const deleteChatRoom = async(roomId) => {
-    await firestore
+    const docRef = await firestore
+        .collection('rooms')
+        .doc(roomId);
+    docRef.delete();
+}
+
+const getChatRoomUsers = async(roomId) => { 
+    const snapshot = await firestore
         .collection('rooms')
         .doc(roomId)
-        .delete();
+        .collection('users')
+        .get()
+    return snapshot.docs.map(doc => doc.data());
+}
+
+const deleteUserFromChatRoom = async(roomId, uid) => {
+    const snapshot = await firestore
+        .collection('rooms')
+        .doc(roomId)
+        .collection('users')
+        .where('uid', '==', uid);
+
+    snapshot.get().then(function(querySnapshot){
+        querySnapshot.forEach(function(doc) {
+            doc.ref.delete();
+        });
+    });
 }
 
 export {
@@ -76,4 +99,6 @@ export {
     getChatRoomMessages, 
     addUserToChatRoom,
     deleteChatRoom,
+    getChatRoomUsers,
+    deleteUserFromChatRoom,
 }

@@ -38,7 +38,7 @@ function ChatRoom( { roomCode } ) {
         <>
         <div>
             <header className='App-header'>
-                <SignOut />
+                <SignOut roomId={roomCode} uid={auth.currentUser.uid}/>
                 <h1>{roomCode}</h1>
                 <Back/>  
             </header>
