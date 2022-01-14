@@ -68,6 +68,8 @@ const deleteChatRoom = async(roomId) => {
         .collection('rooms')
         .doc(roomId);
     docRef.delete();
+    // https://firebase.google.com/docs/firestore/using-console?authuser=0#non-existent_ancestor_documents
+    //  deleted documents still show up in firebase 
 }
 
 const getChatRoomUsers = async(roomId) => { 
